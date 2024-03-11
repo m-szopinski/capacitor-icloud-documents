@@ -1,10 +1,11 @@
-var capacitorICloudDocs = (function (exports, core, core$1) {
+var capacitorICloudDocs = (function (exports, core) {
     'use strict';
 
     const ICloudDocs = core.registerPlugin('ICloudDocs', {
         web: () => Promise.resolve().then(function () { return web; }).then(m => new m.ICloudDocsWeb()),
     });
 
+    const fs = require('@browserfs/core');
     class ICloudDocsWeb extends core.WebPlugin {
         async echo(options) {
             console.log('ECHO', options);
@@ -13,7 +14,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async readFile(options) {
             console.log('Read iCloud file', options);
             return new Promise((resolve, reject) => {
-                core$1.fs.readFile(options.filePath, 'utf-8', (err, content) => {
+                fs.readFile(options.filePath, 'utf-8', (err, content) => {
                     if (err) {
                         reject(err);
                     }
@@ -26,7 +27,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async readFileB64(options) {
             console.log('Read Base64 iCloud file', options);
             return new Promise((resolve, reject) => {
-                core$1.fs.readFile(options.filePath, (err, content) => {
+                fs.readFile(options.filePath, (err, content) => {
                     if (err) {
                         reject(err);
                     }
@@ -39,7 +40,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async removeFile(options) {
             console.log('Remove iCloud file', options);
             return new Promise((resolve, reject) => {
-                core$1.fs.unlink(options.filePath, err => {
+                fs.unlink(options.filePath, err => {
                     if (err) {
                         reject(err);
                     }
@@ -53,7 +54,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async writeFile(options) {
             console.log('Write iCloud file', options);
             return new Promise((resolve, reject) => {
-                core$1.fs.writeFile(options.filePath, options.data, err => {
+                fs.writeFile(options.filePath, options.data, err => {
                     if (err) {
                         reject(err);
                     }
@@ -67,7 +68,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async fileExist(options) {
             console.log('Check if iCloud file exist', options);
             return new Promise(resolve => {
-                core$1.fs.exists(options.path, exist => {
+                fs.exists(options.path, exist => {
                     resolve({
                         result: exist,
                     });
@@ -77,7 +78,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async mkdir(options) {
             console.log('Create iCloud directory', options);
             return new Promise((resolve, reject) => {
-                core$1.fs.mkdir(options.path, undefined, err => {
+                fs.mkdir(options.path, undefined, err => {
                     if (err) {
                         reject(err);
                     }
@@ -91,7 +92,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async stat(options) {
             console.log('Stat of iCloud file', options);
             return new Promise((resolve, reject) => {
-                core$1.fs.stat(options.path, (err, result) => {
+                fs.stat(options.path, (err, result) => {
                     if (err) {
                         reject(err);
                     }
@@ -107,7 +108,7 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
         async readdir(options) {
             console.log('List iCloud files', options);
             return new Promise((resolve, reject) => {
-                core$1.fs.readdir(options.path, (err, result) => {
+                fs.readdir(options.path, (err, result) => {
                     if (err) {
                         reject(err);
                     }
@@ -140,5 +141,5 @@ var capacitorICloudDocs = (function (exports, core, core$1) {
 
     return exports;
 
-})({}, capacitorExports, core$1);
+})({}, capacitorExports);
 //# sourceMappingURL=plugin.js.map

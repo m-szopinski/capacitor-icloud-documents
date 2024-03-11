@@ -1,6 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-// @ts-ignore  
-import { fs } from '@browserfs/core';
+const fs = require('@browserfs/core');
 export class ICloudDocsWeb extends WebPlugin {
     async echo(options) {
         console.log('ECHO', options);

@@ -2,13 +2,10 @@ import { WebPlugin } from '@capacitor/core';
 
 import type { ICloudDocsPlugin } from './definitions';
 
-// @ts-ignore  
-import { fs } from '@browserfs/core';
-
-// @ts-ignore  
-import { IndexedDB } from '@browserfs/dom';
+const fs = require('@browserfs/core');
 
 export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
+
   async echo(options: { value: string }): Promise<{ value: string }> {
     console.log('ECHO', options);
     return options;
