@@ -57,7 +57,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.32.0",
     "swiftlint": "^1.0.1",
-    "typescript": "~4.1.5"
+    "typescript": "~4.5.1"
   },
   "peerDependencies": {
     "@capacitor/core": "^5.0.0"
@@ -74,5 +74,9 @@
     "android": {
       "src": "android"
     }
+  },
+  "dependencies": {
+    "@browserfs/core": "^0.2.1",
+    "@browserfs/dom": "^0.0.6"
   }
 }

@@ -20,14 +20,14 @@ export declare class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin
         filePath: string;
     }): Promise<{
         result: string;
-        url: '';
+        url: string;
     }>;
     writeFile(options: {
         filePath: string;
         data: string;
     }): Promise<{
         result: string;
-        url: '';
+        url: string;
     }>;
     fileExist(options: {
         path: string;
@@ -38,7 +38,7 @@ export declare class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin
         path: string;
     }): Promise<{
         result: string;
-        url: '';
+        url: string;
     }>;
     stat(options: {
         path: string;
