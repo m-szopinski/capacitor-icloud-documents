@@ -2,15 +2,11 @@ import { WebPlugin } from '@capacitor/core';
 
 import type { ICloudDocsPlugin } from './definitions';
 
-import {
-  readFile,
-  unlink,
-  writeFile,
-  exists,
-  mkdir,
-  stat,
-  readdir
-} from '@browserfs/core/emulation/callbacks';
+// @ts-ignore  
+import { fs } from '@browserfs/core';
+
+// @ts-ignore  
+import { IndexedDB } from '@browserfs/dom';
 
 export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async echo(options: { value: string }): Promise<{ value: string }> {
@@ -22,7 +18,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ fileStream: string }> {
     console.log('Read iCloud file', options);
     return new Promise((resolve, reject) => {
-      readFile(options.filePath, 'utf-8' ,(err, content: any) => {
+      fs.readFile(options.filePath, 'utf-8' ,(err, content: any) => {
         if (err) {
           reject(err);
         }
@@ -37,7 +33,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ fileStream: string }> {
     console.log('Read Base64 iCloud file', options);
     return new Promise((resolve, reject) => {
-      readFile(options.filePath, (err, content) => {
+      fs.readFile(options.filePath, (err, content) => {
         if (err) {
           reject(err);
         }
@@ -52,7 +48,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ result: string; url: string }> {
     console.log('Remove iCloud file', options);
     return new Promise((resolve, reject) => {
-      unlink(options.filePath, err => {
+      fs.unlink(options.filePath, err => {
         if (err) {
           reject(err);
         }
@@ -69,7 +65,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ result: string; url: string }> {
     console.log('Write iCloud file', options);
     return new Promise((resolve, reject) => {
-      writeFile(options.filePath, options.data, err => {
+      fs.writeFile(options.filePath, options.data, err => {
         if (err) {
           reject(err);
         }
@@ -83,7 +79,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async fileExist(options: { path: string }): Promise<{ result: boolean }> {
     console.log('Check if iCloud file exist', options);
     return new Promise(resolve => {
-      exists(options.path, exist => {
+      fs.exists(options.path, exist => {
         resolve({
           result: exist,
         });
@@ -95,7 +91,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ result: string; url: string }> {
     console.log('Create iCloud directory', options);
     return new Promise((resolve, reject) => {
-      mkdir(options.path, undefined, err => {
+      fs.mkdir(options.path, undefined, err => {
         if (err) {
           reject(err);
         }
@@ -114,7 +110,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }> {
     console.log('Stat of iCloud file', options);
     return new Promise((resolve, reject) => {
-      stat(options.path, (err, result) => {
+      fs.stat(options.path, (err, result) => {
         if (err) {
           reject(err);
         }
@@ -130,7 +126,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async readdir(options: { path: string }): Promise<{ result: string[] }> {
     console.log('List iCloud files', options);
     return new Promise((resolve, reject) => {
-      readdir(options.path, (err, result) => {
+      fs.readdir(options.path, (err, result) => {
         if (err) {
           reject(err);
         }

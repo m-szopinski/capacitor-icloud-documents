@@ -1,4 +1,4 @@
-var capacitorICloudDocs = (function (exports, core, callbacks) {
+var capacitorICloudDocs = (function (exports, core, core$1) {
     'use strict';
 
     const ICloudDocs = core.registerPlugin('ICloudDocs', {
@@ -13,7 +13,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async readFile(options) {
             console.log('Read iCloud file', options);
             return new Promise((resolve, reject) => {
-                callbacks.readFile(options.filePath, 'utf-8', (err, content) => {
+                core$1.fs.readFile(options.filePath, 'utf-8', (err, content) => {
                     if (err) {
                         reject(err);
                     }
@@ -26,7 +26,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async readFileB64(options) {
             console.log('Read Base64 iCloud file', options);
             return new Promise((resolve, reject) => {
-                callbacks.readFile(options.filePath, (err, content) => {
+                core$1.fs.readFile(options.filePath, (err, content) => {
                     if (err) {
                         reject(err);
                     }
@@ -39,7 +39,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async removeFile(options) {
             console.log('Remove iCloud file', options);
             return new Promise((resolve, reject) => {
-                callbacks.unlink(options.filePath, err => {
+                core$1.fs.unlink(options.filePath, err => {
                     if (err) {
                         reject(err);
                     }
@@ -53,7 +53,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async writeFile(options) {
             console.log('Write iCloud file', options);
             return new Promise((resolve, reject) => {
-                callbacks.writeFile(options.filePath, options.data, err => {
+                core$1.fs.writeFile(options.filePath, options.data, err => {
                     if (err) {
                         reject(err);
                     }
@@ -67,7 +67,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async fileExist(options) {
             console.log('Check if iCloud file exist', options);
             return new Promise(resolve => {
-                callbacks.exists(options.path, exist => {
+                core$1.fs.exists(options.path, exist => {
                     resolve({
                         result: exist,
                     });
@@ -77,7 +77,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async mkdir(options) {
             console.log('Create iCloud directory', options);
             return new Promise((resolve, reject) => {
-                callbacks.mkdir(options.path, undefined, err => {
+                core$1.fs.mkdir(options.path, undefined, err => {
                     if (err) {
                         reject(err);
                     }
@@ -91,7 +91,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async stat(options) {
             console.log('Stat of iCloud file', options);
             return new Promise((resolve, reject) => {
-                callbacks.stat(options.path, (err, result) => {
+                core$1.fs.stat(options.path, (err, result) => {
                     if (err) {
                         reject(err);
                     }
@@ -107,7 +107,7 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
         async readdir(options) {
             console.log('List iCloud files', options);
             return new Promise((resolve, reject) => {
-                callbacks.readdir(options.path, (err, result) => {
+                core$1.fs.readdir(options.path, (err, result) => {
                     if (err) {
                         reject(err);
                     }
@@ -140,5 +140,5 @@ var capacitorICloudDocs = (function (exports, core, callbacks) {
 
     return exports;
 
-})({}, capacitorExports, callbacks);
+})({}, capacitorExports, core$1);
 //# sourceMappingURL=plugin.js.map
