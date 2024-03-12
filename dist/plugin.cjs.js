@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var core = require('@capacitor/core');
 var fs = require('@browserfs/core/emulation/callbacks');
 var bfs = require('@browserfs/core/index');
-var Storage = require('@browserfs/dom/backends/Storage');
+var IndexedDB = require('@browserfs/dom/backends/IndexedDB');
 
 function _interopNamespace(e) {
     if (e && e.__esModule) return e;
@@ -43,7 +43,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async readFile(options) {
         console.log('Read iCloud file', options);
         return new Promise((resolve, reject) => {
-            fs__namespace.readFile(`/fs/${options.filePath}`, 'utf-8', (err, content) => {
+            fs__namespace.readFile(options.filePath, 'utf-8', (err, content) => {
                 if (err) {
                     reject(err);
                 }
@@ -56,7 +56,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async readFileB64(options) {
         console.log('Read Base64 iCloud file', options);
         return new Promise((resolve, reject) => {
-            fs__namespace.readFile(`/fs/${options.filePath}`, (err, content) => {
+            fs__namespace.readFile(options.filePath, (err, content) => {
                 if (err) {
                     reject(err);
                 }
@@ -69,7 +69,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async removeFile(options) {
         console.log('Remove iCloud file', options);
         return new Promise((resolve, reject) => {
-            fs__namespace.unlink(`/fs/${options.filePath}`, err => {
+            fs__namespace.unlink(options.filePath, err => {
                 if (err) {
                     reject(err);
                 }
@@ -83,7 +83,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async writeFile(options) {
         console.log('Write iCloud file', options);
         return new Promise((resolve, reject) => {
-            fs__namespace.writeFile(`/fs/${options.filePath}`, options.data, err => {
+            fs__namespace.writeFile(options.filePath, options.data, err => {
                 if (err) {
                     reject(err);
                 }
@@ -97,7 +97,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async fileExist(options) {
         console.log('Check if iCloud file exist', options);
         return new Promise(resolve => {
-            fs__namespace.exists(`/fs/${options.path}`, exist => {
+            fs__namespace.exists(options.path, exist => {
                 resolve({
                     result: exist,
                 });
@@ -107,7 +107,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async mkdir(options) {
         console.log('Create iCloud directory', options);
         return new Promise((resolve, reject) => {
-            fs__namespace.mkdir(`/fs/${options.path}`, undefined, err => {
+            fs__namespace.mkdir(options.path, undefined, err => {
                 if (err) {
                     reject(err);
                 }
@@ -121,7 +121,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async stat(options) {
         console.log('Stat of iCloud file', options);
         return new Promise((resolve, reject) => {
-            fs__namespace.stat(`/fs/${options.path}`, (err, result) => {
+            fs__namespace.stat(options.path, (err, result) => {
                 if (err) {
                     reject(err);
                 }
@@ -137,7 +137,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async readdir(options) {
         console.log('List iCloud files', options);
         return new Promise((resolve, reject) => {
-            fs__namespace.readdir(`/fs/${options.path}`, (err, result) => {
+            fs__namespace.readdir(options.path, (err, result) => {
                 if (err) {
                     reject(err);
                 }
@@ -149,29 +149,9 @@ class ICloudDocsWeb extends core.WebPlugin {
     }
     async initUbiquitousContainer() {
         console.log('Init iCloud container');
-        bfs__namespace.registerBackend(Storage.StorageFileSystem);
-        return new Promise((resolve, reject) => {
-            bfs__namespace
-                .configure({
-                '/': { fs: 'Storage', options: { storage: localStorage } },
-            })
-                .then(() => {
-                fs__namespace.exists('/fs', exists => {
-                    if (!exists) {
-                        fs__namespace.mkdir('/fs', undefined, (err) => {
-                            if (err) {
-                                reject(err);
-                            }
-                            resolve();
-                        });
-                    }
-                    else {
-                        resolve();
-                    }
-                });
-            }).catch((err) => {
-                reject(err);
-            });
+        bfs__namespace.registerBackend(IndexedDB.IndexedDBFileSystem);
+        return bfs__namespace.configure({
+            '/': { fs: 'AsyncMirror', options: { sync: { fs: 'InMemory' }, async: { fs: 'IndexedDB' } } }
         });
     }
     async syncToCloud(options) {
