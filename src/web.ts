@@ -7,7 +7,6 @@ import fs from 'indexeddb-fs';
 
 export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
 
-
   async echo(options: { value: string }): Promise<{ value: string }> {
     console.log('ECHO', options);
     return options;
@@ -101,8 +100,6 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async initUbiquitousContainer(): Promise<void> {
     console.log('Init iCloud container');
     return new Promise((resolve) => {
-      // BrowserFS.install(window);
-      // Configures BrowserFS to use the LocalStorage file system.
       resolve();
     })
     

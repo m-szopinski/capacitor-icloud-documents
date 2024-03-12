@@ -1,19 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ICloudDocsWeb = void 0;
-const core_1 = require("@capacitor/core");
-const indexeddb_fs_1 = __importDefault(require("indexeddb-fs"));
-class ICloudDocsWeb extends core_1.WebPlugin {
+import { WebPlugin } from '@capacitor/core';
+import fs from 'indexeddb-fs';
+export class ICloudDocsWeb extends WebPlugin {
     async echo(options) {
         console.log('ECHO', options);
         return options;
     }
     async readFile(options) {
         console.log('Read iCloud file', options);
-        return indexeddb_fs_1.default.readFile(options.filePath).then((res) => {
+        return fs.readFile(options.filePath).then((res) => {
             return {
                 fileStream: res
             };
@@ -21,7 +15,7 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     }
     async readFileB64(options) {
         console.log('Read Base64 iCloud file', options);
-        return indexeddb_fs_1.default.readFile(options.filePath).then((res) => {
+        return fs.readFile(options.filePath).then((res) => {
             return {
                 fileStream: res
             };
@@ -29,7 +23,7 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     }
     async removeFile(options) {
         console.log('Remove iCloud file', options);
-        return indexeddb_fs_1.default.removeFile(options.filePath).then(() => {
+        return fs.removeFile(options.filePath).then(() => {
             return {
                 result: 'OK',
                 url: options.filePath
@@ -38,7 +32,7 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     }
     async writeFile(options) {
         console.log('Write iCloud file', options);
-        return indexeddb_fs_1.default.writeFile(options.filePath, options.data).then(() => {
+        return fs.writeFile(options.filePath, options.data).then(() => {
             return {
                 result: 'OK',
                 url: options.filePath
@@ -47,7 +41,7 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     }
     async fileExist(options) {
         console.log('Check if iCloud file exist', options);
-        return indexeddb_fs_1.default.exists(options.path).then((res) => {
+        return fs.exists(options.path).then((res) => {
             return {
                 result: res,
             };
@@ -55,7 +49,7 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     }
     async mkdir(options) {
         console.log('Create iCloud directory', options);
-        return indexeddb_fs_1.default.createDirectory(options.path).then(() => {
+        return fs.createDirectory(options.path).then(() => {
             return {
                 result: 'OK',
                 url: options.path
@@ -64,7 +58,7 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     }
     async stat(options) {
         console.log('Stat of iCloud file', options);
-        return indexeddb_fs_1.default.details(options.path).then((res) => {
+        return fs.details(options.path).then((res) => {
             return {
                 type: res.directory ? 'Directory' : 'File',
                 size: 0,
@@ -75,7 +69,7 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     }
     async readdir(options) {
         console.log('List iCloud files', options);
-        return indexeddb_fs_1.default.readDirectory(options.path).then((res) => {
+        return fs.readDirectory(options.path).then((res) => {
             return {
                 result: [...res.directories.map((d) => d.name), ...res.files.map((f) => f.name)]
             };
@@ -84,8 +78,6 @@ class ICloudDocsWeb extends core_1.WebPlugin {
     async initUbiquitousContainer() {
         console.log('Init iCloud container');
         return new Promise((resolve) => {
-            // BrowserFS.install(window);
-            // Configures BrowserFS to use the LocalStorage file system.
             resolve();
         });
     }
@@ -94,5 +86,4 @@ class ICloudDocsWeb extends core_1.WebPlugin {
         return { url: '' };
     }
 }
-exports.ICloudDocsWeb = ICloudDocsWeb;
 //# sourceMappingURL=web.js.map
