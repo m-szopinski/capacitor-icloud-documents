@@ -12,7 +12,6 @@ import { StorageFileSystem } from '@browserfs/dom/backends/Storage';
 
 // } from '@browserfs/core/emulation/shared'
 
-
 export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async echo(options: { value: string }): Promise<{ value: string }> {
     console.log('ECHO', options);
@@ -23,7 +22,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ fileStream: string }> {
     console.log('Read iCloud file', options);
     return new Promise((resolve, reject) => {
-      fs.readFile(options.filePath, 'utf-8' ,(err, content: any) => {
+      fs.readFile(options.filePath, 'utf-8', (err, content: any) => {
         if (err) {
           reject(err);
         }
@@ -144,7 +143,9 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async initUbiquitousContainer(): Promise<void> {
     console.log('Init iCloud container');
     bfs.registerBackend(StorageFileSystem as any);
-    return bfs.configure({ fs: 'Storage', options: { storage: localStorage } });
+    return bfs.configure({
+      '/': { fs: 'Storage', options: { storage: localStorage } },
+    });
   }
   async syncToCloud(options: {
     filePath: string;

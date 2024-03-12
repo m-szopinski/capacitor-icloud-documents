@@ -120,7 +120,9 @@ export class ICloudDocsWeb extends WebPlugin {
     async initUbiquitousContainer() {
         console.log('Init iCloud container');
         bfs.registerBackend(StorageFileSystem);
-        return bfs.configure({ fs: 'Storage', options: { storage: localStorage } });
+        return bfs.configure({
+            '/': { fs: 'Storage', options: { storage: localStorage } },
+        });
     }
     async syncToCloud(options) {
         console.log('Sync iCloud file', options);
