@@ -1,4 +1,4 @@
-var capacitorICloudDocs = (function (exports, core, fs, bfs) {
+var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
     'use strict';
 
     function _interopNamespace(e) {
@@ -144,7 +144,8 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs) {
         async initUbiquitousContainer() {
             console.log('Init iCloud container');
             console.log(bfs__namespace.configure);
-            return bfs__namespace.configure({ fs: 'Storage' });
+            bfs__namespace.registerBackend(Storage.StorageFileSystem);
+            return bfs__namespace.configure({ fs: 'Storage', options: { storage: localStorage } });
         }
         async syncToCloud(options) {
             console.log('Sync iCloud file', options);
@@ -163,5 +164,5 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs) {
 
     return exports;
 
-})({}, capacitorExports, fs, bfs);
+})({}, capacitorExports, fs, bfs, Storage);
 //# sourceMappingURL=plugin.js.map

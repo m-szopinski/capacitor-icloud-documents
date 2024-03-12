@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var core = require('@capacitor/core');
 var fs = require('@browserfs/core/emulation/callbacks');
 var bfs = require('@browserfs/core/index');
+var Storage = require('@browserfs/fs-dom/backends/Storage');
 
 function _interopNamespace(e) {
     if (e && e.__esModule) return e;
@@ -149,7 +150,8 @@ class ICloudDocsWeb extends core.WebPlugin {
     async initUbiquitousContainer() {
         console.log('Init iCloud container');
         console.log(bfs__namespace.configure);
-        return bfs__namespace.configure({ fs: 'Storage' });
+        bfs__namespace.registerBackend(Storage.StorageFileSystem);
+        return bfs__namespace.configure({ fs: 'Storage', options: { storage: localStorage } });
     }
     async syncToCloud(options) {
         console.log('Sync iCloud file', options);
