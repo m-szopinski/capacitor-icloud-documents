@@ -1,7 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import * as fs from '@browserfs/core/emulation/callbacks';
 import * as bfs from '@browserfs/core/index';
-import { IndexedDBFileSystem } from '@browserfs/fs-dom/backends/IndexedDB';
+import { StorageFileSystem } from '@browserfs/dom/backends/Storage';
 // import {
 //   initialize,
 // } from '@browserfs/core/emulation/shared'
@@ -120,7 +120,7 @@ export class ICloudDocsWeb extends WebPlugin {
     async initUbiquitousContainer() {
         console.log('Init iCloud container');
         console.log(bfs.configure);
-        bfs.registerBackend(IndexedDBFileSystem);
+        bfs.registerBackend(StorageFileSystem);
         return bfs.configure({ fs: 'IndexedDB', options: { storage: indexedDB } });
     }
     async syncToCloud(options) {

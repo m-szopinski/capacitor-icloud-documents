@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var core = require('@capacitor/core');
 var fs = require('@browserfs/core/emulation/callbacks');
 var bfs = require('@browserfs/core/index');
-var IndexedDB = require('@browserfs/fs-dom/backends/IndexedDB');
+var Storage = require('@browserfs/dom/backends/Storage');
 
 function _interopNamespace(e) {
     if (e && e.__esModule) return e;
@@ -150,7 +150,7 @@ class ICloudDocsWeb extends core.WebPlugin {
     async initUbiquitousContainer() {
         console.log('Init iCloud container');
         console.log(bfs__namespace.configure);
-        bfs__namespace.registerBackend(IndexedDB.IndexedDBFileSystem);
+        bfs__namespace.registerBackend(Storage.StorageFileSystem);
         return bfs__namespace.configure({ fs: 'IndexedDB', options: { storage: indexedDB } });
     }
     async syncToCloud(options) {
