@@ -2,10 +2,19 @@ import { WebPlugin } from '@capacitor/core';
 
 import type { ICloudDocsPlugin } from './definitions';
 
-const fs = require('@browserfs/core');
+import {
+  fs,
+  configure
+} from '@browserfs/core/index';
+
+
+// import {
+//   initialize,
+
+// } from '@browserfs/core/emulation/shared'
+
 
 export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
-
   async echo(options: { value: string }): Promise<{ value: string }> {
     console.log('ECHO', options);
     return options;
@@ -135,9 +144,9 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }
   async initUbiquitousContainer(): Promise<void> {
     console.log('Init iCloud container');
-    return new Promise(resolve => {
-      resolve();
-    });
+    console.log(configure);
+    return configure({ '/': { fs: 'localStorage' } });
+
   }
   async syncToCloud(options: {
     filePath: string;

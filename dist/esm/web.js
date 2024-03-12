@@ -1,5 +1,8 @@
 import { WebPlugin } from '@capacitor/core';
-const fs = require('@browserfs/core');
+import { fs, configure } from '@browserfs/core/index';
+// import {
+//   initialize,
+// } from '@browserfs/core/emulation/shared'
 export class ICloudDocsWeb extends WebPlugin {
     async echo(options) {
         console.log('ECHO', options);
@@ -114,9 +117,8 @@ export class ICloudDocsWeb extends WebPlugin {
     }
     async initUbiquitousContainer() {
         console.log('Init iCloud container');
-        return new Promise(resolve => {
-            resolve();
-        });
+        console.log(configure);
+        return configure({ '/': { fs: 'localStorage' } });
     }
     async syncToCloud(options) {
         console.log('Sync iCloud file', options);
