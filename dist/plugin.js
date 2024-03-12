@@ -152,7 +152,10 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
                     .then(() => {
                     fs__namespace.exists('/fs', exists => {
                         if (!exists) {
-                            fs__namespace.mkdir('/fs', () => {
+                            fs__namespace.mkdir('/fs', undefined, (err) => {
+                                if (err) {
+                                    reject(err);
+                                }
                                 resolve();
                             });
                         }

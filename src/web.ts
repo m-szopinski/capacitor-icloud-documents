@@ -151,7 +151,10 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
         .then(() => {
           fs.exists('/fs', exists => {
             if (!exists) {
-              fs.mkdir('/fs', () => {
+              fs.mkdir('/fs', undefined, (err) => {
+                if (err) {
+                  reject(err);
+                }
                 resolve();
               });
             } else {
