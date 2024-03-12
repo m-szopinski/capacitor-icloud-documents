@@ -76,7 +76,7 @@
     }
   },
   "dependencies": {
-    "@browserfs/core": "^0.1.0",
+    "@browserfs/core": "github:browser-fs/core",
     "@browserfs/dom": "^0.0.6",
     "@browserfs/fs-dom": "^0.0.5"
   }

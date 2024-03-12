@@ -144,9 +144,7 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async initUbiquitousContainer() {
             console.log('Init iCloud container');
             bfs__namespace.registerBackend(Storage.StorageFileSystem);
-            return bfs__namespace.configure({
-                '/': { fs: 'AsyncMirror', options: { sync: { fs: 'InMemory' }, async: { fs: 'Storage' } } }
-            });
+            return bfs__namespace.configure({ '/': 'Storage' });
         }
         async syncToCloud(options) {
             console.log('Sync iCloud file', options);
