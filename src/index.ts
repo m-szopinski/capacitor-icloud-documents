@@ -3,7 +3,7 @@ import { registerPlugin } from '@capacitor/core';
 import type { ICloudDocsPlugin } from './definitions';
 
 const ICloudDocs = registerPlugin<ICloudDocsPlugin>('ICloudDocs', {
-  web: () => import('./web.js').then(m => new m.ICloudDocsWeb()),
+  web: () => import('./web').then(m => new m.ICloudDocsWeb()),
 });
 
 export * from './definitions';
