@@ -5,7 +5,7 @@ import type { ICloudDocsPlugin } from './definitions';
 import * as fs from '@browserfs/core/emulation/callbacks';
 import * as bfs from '@browserfs/core/index';
 
-import { IndexedDBFileSystem } from '@browserfs/dom/backends/IndexedDB';
+import { StorageFileSystem } from '@browserfs/dom/backends/Storage';
 
 // import {
 //   initialize,
@@ -142,9 +142,9 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }
   async initUbiquitousContainer(): Promise<void> {
     console.log('Init iCloud container');
-    bfs.registerBackend(IndexedDBFileSystem as any);
+    bfs.registerBackend(StorageFileSystem as any);
     return bfs.configure({
-      '/': { fs: 'AsyncMirror', options: { sync: { fs: 'InMemory' }, async: { fs: 'IndexedDB' } } }
+      '/': { fs: 'AsyncMirror', options: { sync: { fs: 'InMemory' }, async: { fs: 'Storage' } } }
     });
   }
   async syncToCloud(options: {
