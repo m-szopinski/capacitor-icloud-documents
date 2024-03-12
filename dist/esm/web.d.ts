@@ -1,7 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
 import type { ICloudDocsPlugin } from './definitions';
-import '@browserfs/core';
-import '@browserfs/dom';
 export declare class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
     echo(options: {
         value: string;
