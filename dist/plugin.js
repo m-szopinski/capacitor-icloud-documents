@@ -146,6 +146,8 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
             bfs__namespace.registerBackend(Storage.StorageFileSystem);
             return bfs__namespace.configure({
                 '/': { fs: 'Storage', options: { storage: localStorage } },
+            }).then(() => {
+                return fs__namespace.mkdir('/');
             });
         }
         async syncToCloud(options) {

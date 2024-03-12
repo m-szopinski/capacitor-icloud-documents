@@ -122,6 +122,8 @@ export class ICloudDocsWeb extends WebPlugin {
         bfs.registerBackend(StorageFileSystem);
         return bfs.configure({
             '/': { fs: 'Storage', options: { storage: localStorage } },
+        }).then(() => {
+            return fs.mkdir('/');
         });
     }
     async syncToCloud(options) {
