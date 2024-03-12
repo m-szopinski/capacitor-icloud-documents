@@ -2,7 +2,7 @@ import { WebPlugin } from '@capacitor/core';
 
 import type { ICloudDocsPlugin } from './definitions';
 
-import * as fs from 'fs-web';
+import fs from 'indexeddb-fs';
 
 
 export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
@@ -16,46 +16,31 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
     filePath: string;
   }): Promise<{ fileStream: string }> {
     console.log('Read iCloud file', options);
-    return new Promise((resolve, reject) => {
-      fs.readFile(options.filePath, 'utf-8', (err, content: any) => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          fileStream: content,
-        });
-      });
+    return fs.readFile(options.filePath).then((res) => {
+      return {
+        fileStream: res as string
+      }
     });
   }
   async readFileB64(options: {
     filePath: string;
   }): Promise<{ fileStream: string }> {
     console.log('Read Base64 iCloud file', options);
-    return new Promise((resolve, reject) => {
-      fs.readFile(options.filePath, (err, content) => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          fileStream: content?.toString() || '',
-        });
-      });
+    return fs.readFile(options.filePath).then((res) => {
+      return {
+        fileStream: res as string
+      }
     });
   }
   async removeFile(options: {
     filePath: string;
   }): Promise<{ result: string; url: string }> {
     console.log('Remove iCloud file', options);
-    return new Promise((resolve, reject) => {
-      fs.unlink(options.filePath, err => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          result: 'OK',
-          url: options.filePath,
-        });
-      });
+    return fs.removeFile(options.filePath).then(() => {
+      return {
+        result: 'OK',
+        url: options.filePath
+      }
     });
   }
   async writeFile(options: {
@@ -63,42 +48,30 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
     data: string;
   }): Promise<{ result: string; url: string }> {
     console.log('Write iCloud file', options);
-    return new Promise((resolve, reject) => {
-      fs.writeFile(options.filePath, options.data, err => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          result: 'OK',
-          url: options.filePath,
-        });
-      });
+    return fs.writeFile(options.filePath, options.data).then(() => {
+      return {
+        result: 'OK',
+        url: options.filePath
+      }
     });
   }
   async fileExist(options: { path: string }): Promise<{ result: boolean }> {
     console.log('Check if iCloud file exist', options);
-    return new Promise(resolve => {
-      fs.exists(options.path, exist => {
-        resolve({
-          result: exist,
-        });
-      });
+    return fs.exists(options.path).then((res) => {
+      return {
+        result: res,
+      }
     });
   }
   async mkdir(options: {
     path: string;
   }): Promise<{ result: string; url: string }> {
     console.log('Create iCloud directory', options);
-    return new Promise((resolve, reject) => {
-      fs.mkdir(options.path, undefined, err => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          result: 'OK',
-          url: options.path,
-        });
-      });
+    return fs.createDirectory(options.path).then(() => {
+      return {
+        result: 'OK',
+        url: options.path
+      }
     });
   }
   async stat(options: { path: string }): Promise<{
@@ -108,31 +81,21 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
     creationDate: string;
   }> {
     console.log('Stat of iCloud file', options);
-    return new Promise((resolve, reject) => {
-      fs.stat(options.path, (err, result) => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          type: result!.isDirectory() ? 'Directory' : 'File',
-          size: result!.size,
-          modificationDate: result?.mtime.toString() || new Date().toString(),
-          creationDate: result?.ctime.toString() || new Date().toString(),
-        });
-      });
+    return fs.details(options.path).then((res) => {
+      return {
+        type: res.directory ? 'Directory' : 'File',
+        size: 0,
+        modificationDate: res.createdAt.toString(),
+        creationDate: res.createdAt.toString()
+      }
     });
   }
   async readdir(options: { path: string }): Promise<{ result: string[] }> {
     console.log('List iCloud files', options);
-    return new Promise((resolve, reject) => {
-      fs.readdir(options.path, (err, result) => {
-        if (err) {
-          reject(err);
-        }
-        resolve({
-          result: result || [],
-        });
-      });
+    return fs.readDirectory(options.path).then((res) => {
+      return {
+        result: [...res.directories.map((d) => d.name), ...res.files.map((f) => f.name)]
+      }
     });
   }
   async initUbiquitousContainer(): Promise<void> {

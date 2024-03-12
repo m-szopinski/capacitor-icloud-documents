@@ -85,6 +85,7 @@
     "@types/node": "^14.18.63",
     "browserfs": "^1.4.3",
     "esbuild": "^0.20.1",
-    "fs-web": "^1.0.1"
+    "fs-web": "^1.0.1",
+    "indexeddb-fs": "^2.1.5"
   }
 }
