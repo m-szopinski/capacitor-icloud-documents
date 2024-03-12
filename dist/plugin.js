@@ -1,35 +1,40 @@
-var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
+(function () {
     'use strict';
 
-    function _interopNamespace(e) {
-        if (e && e.__esModule) return e;
-        var n = Object.create(null);
-        if (e) {
-            Object.keys(e).forEach(function (k) {
-                if (k !== 'default') {
-                    var d = Object.getOwnPropertyDescriptor(e, k);
-                    Object.defineProperty(n, k, d.get ? d : {
-                        enumerable: true,
-                        get: function () { return e[k]; }
-                    });
-                }
-            });
+    var __createBinding = (undefined && undefined.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+          desc = { enumerable: true, get: function() { return m[k]; } };
         }
-        n["default"] = e;
-        return Object.freeze(n);
-    }
-
-    var fs__namespace = /*#__PURE__*/_interopNamespace(fs);
-    var bfs__namespace = /*#__PURE__*/_interopNamespace(bfs);
-
-    const ICloudDocs = core.registerPlugin('ICloudDocs', {
+        Object.defineProperty(o, k2, desc);
+    }) : (function(o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        o[k2] = m[k];
+    }));
+    var __exportStar = (undefined && undefined.__exportStar) || function(m, exports) {
+        for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+    };
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ICloudDocs = void 0;
+    const core_1$1 = require("@capacitor/core");
+    const ICloudDocs = (0, core_1$1.registerPlugin)('ICloudDocs', {
         web: () => Promise.resolve().then(function () { return web; }).then(m => new m.ICloudDocsWeb()),
     });
+    exports.ICloudDocs = ICloudDocs;
+    __exportStar(require("./definitions"), exports);
 
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.ICloudDocsWeb = void 0;
+    const core_1 = require("@capacitor/core");
+    require("@browserfs/core");
+    require("@browserfs/dom");
+    const bfs = require('@browserfs/core');
+    const bfs_dom = require('@browserfs/dom');
     // import {
     //   initialize,
     // } from '@browserfs/core/emulation/shared'
-    class ICloudDocsWeb extends core.WebPlugin {
+    class ICloudDocsWeb extends core_1.WebPlugin {
         async echo(options) {
             console.log('ECHO', options);
             return options;
@@ -37,7 +42,7 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async readFile(options) {
             console.log('Read iCloud file', options);
             return new Promise((resolve, reject) => {
-                fs__namespace.readFile(options.filePath, 'utf-8', (err, content) => {
+                bfs.fs.readFile(options.filePath, 'utf-8', (err, content) => {
                     if (err) {
                         reject(err);
                     }
@@ -50,12 +55,12 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async readFileB64(options) {
             console.log('Read Base64 iCloud file', options);
             return new Promise((resolve, reject) => {
-                fs__namespace.readFile(options.filePath, (err, content) => {
+                bfs.fs.readFile(options.filePath, (err, content) => {
                     if (err) {
                         reject(err);
                     }
                     resolve({
-                        fileStream: (content === null || content === void 0 ? void 0 : content.toString()) || '',
+                        fileStream: content?.toString() || '',
                     });
                 });
             });
@@ -63,7 +68,7 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async removeFile(options) {
             console.log('Remove iCloud file', options);
             return new Promise((resolve, reject) => {
-                fs__namespace.unlink(options.filePath, err => {
+                bfs.fs.unlink(options.filePath, err => {
                     if (err) {
                         reject(err);
                     }
@@ -77,7 +82,7 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async writeFile(options) {
             console.log('Write iCloud file', options);
             return new Promise((resolve, reject) => {
-                fs__namespace.writeFile(options.filePath, options.data, err => {
+                bfs.fs.writeFile(options.filePath, options.data, err => {
                     if (err) {
                         reject(err);
                     }
@@ -91,7 +96,7 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async fileExist(options) {
             console.log('Check if iCloud file exist', options);
             return new Promise(resolve => {
-                fs__namespace.exists(options.path, exist => {
+                bfs.fs.exists(options.path, exist => {
                     resolve({
                         result: exist,
                     });
@@ -101,7 +106,7 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async mkdir(options) {
             console.log('Create iCloud directory', options);
             return new Promise((resolve, reject) => {
-                fs__namespace.mkdir(options.path, undefined, err => {
+                bfs.fs.mkdir(options.path, undefined, err => {
                     if (err) {
                         reject(err);
                     }
@@ -115,15 +120,15 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async stat(options) {
             console.log('Stat of iCloud file', options);
             return new Promise((resolve, reject) => {
-                fs__namespace.stat(options.path, (err, result) => {
+                bfs.fs.stat(options.path, (err, result) => {
                     if (err) {
                         reject(err);
                     }
                     resolve({
                         type: result.isDirectory() ? 'Directory' : 'File',
                         size: result.size,
-                        modificationDate: (result === null || result === void 0 ? void 0 : result.mtime.toString()) || new Date().toString(),
-                        creationDate: (result === null || result === void 0 ? void 0 : result.ctime.toString()) || new Date().toString(),
+                        modificationDate: result?.mtime.toString() || new Date().toString(),
+                        creationDate: result?.ctime.toString() || new Date().toString(),
                     });
                 });
             });
@@ -131,7 +136,7 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         async readdir(options) {
             console.log('List iCloud files', options);
             return new Promise((resolve, reject) => {
-                fs__namespace.readdir(options.path, (err, result) => {
+                bfs.fs.readdir(options.path, (err, result) => {
                     if (err) {
                         reject(err);
                     }
@@ -143,25 +148,19 @@ var capacitorICloudDocs = (function (exports, core, fs, bfs, Storage) {
         }
         async initUbiquitousContainer() {
             console.log('Init iCloud container');
-            bfs__namespace.registerBackend(Storage.StorageFileSystem);
-            return bfs__namespace.configure({ '/': 'Storage' });
+            bfs.registerBackend(bfs_dom.StorageFileSystem);
+            return bfs.configure({ '/': 'Storage' });
         }
         async syncToCloud(options) {
             console.log('Sync iCloud file', options);
             return { url: '' };
         }
     }
+    exports.ICloudDocsWeb = ICloudDocsWeb;
 
     var web = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        ICloudDocsWeb: ICloudDocsWeb
+        __proto__: null
     });
 
-    exports.ICloudDocs = ICloudDocs;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
-
-    return exports;
-
-})({}, capacitorExports, fs, bfs, Storage);
+})();
 //# sourceMappingURL=plugin.js.map

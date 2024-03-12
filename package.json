@@ -6,6 +6,9 @@
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
+  "engines": {
+    "node": ">= 18"
+  },
   "files": [
     "android/src/main/",
     "android/build.gradle",
@@ -57,7 +60,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.32.0",
     "swiftlint": "^1.0.1",
-    "typescript": "~4.5.1"
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "@capacitor/core": "^5.0.0"
@@ -76,8 +79,10 @@
     }
   },
   "dependencies": {
-    "@browserfs/core": "github:browser-fs/core",
+    "@browserfs/core": "^0.2.1",
     "@browserfs/dom": "^0.0.6",
-    "@browserfs/fs-dom": "^0.0.5"
+    "@browserfs/fs-dom": "^0.0.5",
+    "@types/node": "^14.18.63",
+    "esbuild": "^0.20.1"
   }
 }

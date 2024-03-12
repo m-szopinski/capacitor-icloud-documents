@@ -2,10 +2,11 @@ import { WebPlugin } from '@capacitor/core';
 
 import type { ICloudDocsPlugin } from './definitions';
 
-import * as fs from '@browserfs/core/emulation/callbacks';
-import * as bfs from '@browserfs/core/index';
+import '@browserfs/core';
+import '@browserfs/dom';
 
-import { StorageFileSystem } from '@browserfs/dom/backends/Storage';
+const bfs = require('@browserfs/core');
+const bfs_dom = require('@browserfs/dom');
 
 // import {
 //   initialize,
@@ -22,7 +23,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ fileStream: string }> {
     console.log('Read iCloud file', options);
     return new Promise((resolve, reject) => {
-      fs.readFile(options.filePath, 'utf-8', (err, content: any) => {
+      bfs.fs.readFile(options.filePath, 'utf-8', (err, content: any) => {
         if (err) {
           reject(err);
         }
@@ -37,7 +38,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ fileStream: string }> {
     console.log('Read Base64 iCloud file', options);
     return new Promise((resolve, reject) => {
-      fs.readFile(options.filePath, (err, content) => {
+      bfs.fs.readFile(options.filePath, (err, content) => {
         if (err) {
           reject(err);
         }
@@ -52,7 +53,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ result: string; url: string }> {
     console.log('Remove iCloud file', options);
     return new Promise((resolve, reject) => {
-      fs.unlink(options.filePath, err => {
+      bfs.fs.unlink(options.filePath, err => {
         if (err) {
           reject(err);
         }
@@ -69,7 +70,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ result: string; url: string }> {
     console.log('Write iCloud file', options);
     return new Promise((resolve, reject) => {
-      fs.writeFile(options.filePath, options.data, err => {
+      bfs.fs.writeFile(options.filePath, options.data, err => {
         if (err) {
           reject(err);
         }
@@ -83,7 +84,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async fileExist(options: { path: string }): Promise<{ result: boolean }> {
     console.log('Check if iCloud file exist', options);
     return new Promise(resolve => {
-      fs.exists(options.path, exist => {
+      bfs.fs.exists(options.path, exist => {
         resolve({
           result: exist,
         });
@@ -95,7 +96,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }): Promise<{ result: string; url: string }> {
     console.log('Create iCloud directory', options);
     return new Promise((resolve, reject) => {
-      fs.mkdir(options.path, undefined, err => {
+      bfs.fs.mkdir(options.path, undefined, err => {
         if (err) {
           reject(err);
         }
@@ -114,7 +115,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }> {
     console.log('Stat of iCloud file', options);
     return new Promise((resolve, reject) => {
-      fs.stat(options.path, (err, result) => {
+      bfs.fs.stat(options.path, (err, result) => {
         if (err) {
           reject(err);
         }
@@ -130,7 +131,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   async readdir(options: { path: string }): Promise<{ result: string[] }> {
     console.log('List iCloud files', options);
     return new Promise((resolve, reject) => {
-      fs.readdir(options.path, (err, result) => {
+      bfs.fs.readdir(options.path, (err, result) => {
         if (err) {
           reject(err);
         }
@@ -142,7 +143,7 @@ export class ICloudDocsWeb extends WebPlugin implements ICloudDocsPlugin {
   }
   async initUbiquitousContainer(): Promise<void> {
     console.log('Init iCloud container');
-    bfs.registerBackend(StorageFileSystem as any);
+    bfs.registerBackend(bfs_dom.StorageFileSystem as any);
     return bfs.configure({ '/': 'Storage' });
   }
   async syncToCloud(options: {

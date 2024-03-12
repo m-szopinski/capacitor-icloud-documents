@@ -4,9 +4,6 @@
     "declaration": true,
     "esModuleInterop": true,
     "inlineSources": true,
-    "lib": ["dom", "es2017"],
-    "module": "esnext",
-    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -15,7 +12,10 @@
     "sourceMap": true,
     "strict": true,
     "noImplicitAny": false,
-    "target": "es2017"
+    "module": "NodeNext",
+		"target": "ES2020",
+		"lib": ["ESNext", "dom"],
+		"moduleResolution": "NodeNext",
   },
   "files": ["src/index.ts"]
 }
